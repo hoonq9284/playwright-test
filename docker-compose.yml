@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  test:
+    build: .
+    container_name: playwright-test
+    volumes:
+      - ./reports:/reports
+    environment:
+      - DEFAULT_TIMEOUT=${DEFAULT_TIMEOUT:-10}
+      - PAGE_LOAD_TIMEOUT=${PAGE_LOAD_TIMEOUT:-30}
+      - HEADLESS=${HEADLESS:-true}
+      - PYTHONUNBUFFERED=1
+    shm_size: '2gb'
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
