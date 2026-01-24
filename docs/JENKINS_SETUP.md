@@ -53,7 +53,7 @@ GitHub hook trigger for GITScm polling
 #### Pipeline
 - Definition: **Pipeline script from SCM**
 - SCM: **Git**
-- Repository URL: `https://github.com/your-repo/playwright-test.git`
+- Repository URL: `https://github.com/hoonq9284/playwright-test.git`
 - Branch: `*/main`
 - Script Path: `Jenkinsfile`
 
@@ -62,8 +62,8 @@ GitHub hook trigger for GITScm polling
 ## Allure 설정
 
 ### Jenkins에서 Allure 도구 설정
-1. Jenkins 관리 > Global Tool Configuration
-2. **Allure Commandline** 섹션
+1. Jenkins 관리 > Tool
+2. **Allure Commandline Installation** 섹션
 3. Add Allure Commandline
    - Name: `allure`
    - Install automatically 체크
@@ -73,7 +73,7 @@ GitHub hook trigger for GITScm polling
 
 ## 환경 변수 설정 (선택사항)
 
-Jenkins 관리 > Configure System > Global properties에서 환경 변수 추가:
+Jenkins 관리 > System > Global properties에서 환경 변수 추가:
 
 | 변수명 | 값 | 설명 |
 |-------|-----|------|

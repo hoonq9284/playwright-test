@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        PATH = "/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
         DOCKER_IMAGE = 'playwright-test'
         REPORTS_DIR = 'reports'
     }
@@ -46,21 +47,6 @@ pipeline {
             }
         }
 
-        stage('Generate Report') {
-            steps {
-                script {
-                    sh '''
-                        if [ -d "${REPORTS_DIR}/allure-results" ] && [ "$(ls -A ${REPORTS_DIR}/allure-results)" ]; then
-                            echo "Generating Allure report..."
-                            allure generate ${REPORTS_DIR}/allure-results -o ${REPORTS_DIR}/allure-report --clean
-                        else
-                            echo "No test results found!"
-                            exit 1
-                        fi
-                    '''
-                }
-            }
-        }
     }
 
     post {
