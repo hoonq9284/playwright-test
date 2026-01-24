@@ -58,8 +58,8 @@ pipeline {
                 results: [[path: "${REPORTS_DIR}/allure-results"]]
             ])
 
-            // 아티팩트 보관
-            archiveArtifacts artifacts: "${REPORTS_DIR}/allure-report/**/*", allowEmptyArchive: true
+            // 아티팩트 보관 (Allure 플러그인이 workspace 루트에 생성)
+            archiveArtifacts artifacts: "allure-report/**/*", allowEmptyArchive: true
 
             // Docker 정리
             sh '''
