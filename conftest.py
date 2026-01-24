@@ -4,12 +4,19 @@ from playwright.sync_api import Page
 
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
+from pages.cart_page import CartPage
+from pages.checkout_page import CheckoutStepOnePage, CheckoutStepTwoPage, CheckoutCompletePage
+from pages.product_detail_page import ProductDetailPage
+from data.users import Users
 
 
 # 테스트 모듈 실행 순서 정의
 TEST_ORDER = [
-    "test_login",      # 1순위: 로그인 테스트
-    "test_inventory",  # 2순위: 인벤토리 테스트
+    "test_login",           # 1순위: 로그인 테스트
+    "test_inventory",       # 2순위: 인벤토리 테스트
+    "test_product_detail",  # 3순위: 상품 상세 테스트
+    "test_cart",            # 4순위: 장바구니 테스트
+    "test_checkout",        # 5순위: 체크아웃 테스트
 ]
 
 
@@ -51,11 +58,54 @@ def inventory_page(page: Page):
 @pytest.fixture
 def logged_in_page(page: Page):
     """표준 사용자로 로그인된 상태의 InventoryPage 반환"""
-    from data.users import Users
     login = LoginPage(page)
     login.open()
     login.login(Users.STANDARD.username, Users.STANDARD.password)
     return InventoryPage(page)
+
+
+@pytest.fixture
+def cart_page(page: Page):
+    """CartPage 인스턴스 반환"""
+    return CartPage(page)
+
+
+@pytest.fixture
+def checkout_step_one_page(page: Page):
+    """CheckoutStepOnePage 인스턴스 반환"""
+    return CheckoutStepOnePage(page)
+
+
+@pytest.fixture
+def checkout_step_two_page(page: Page):
+    """CheckoutStepTwoPage 인스턴스 반환"""
+    return CheckoutStepTwoPage(page)
+
+
+@pytest.fixture
+def checkout_complete_page(page: Page):
+    """CheckoutCompletePage 인스턴스 반환"""
+    return CheckoutCompletePage(page)
+
+
+@pytest.fixture
+def product_detail_page(page: Page):
+    """ProductDetailPage 인스턴스 반환"""
+    return ProductDetailPage(page)
+
+
+@pytest.fixture
+def logged_in_with_cart(page: Page):
+    """표준 사용자로 로그인 후 장바구니에 상품 추가된 상태"""
+    login = LoginPage(page)
+    login.open()
+    login.login(Users.STANDARD.username, Users.STANDARD.password)
+
+    inventory = InventoryPage(page)
+    inventory.add_item_to_cart_by_index(0)
+    inventory.add_item_to_cart_by_index(1)
+
+    return inventory
 
 
 @pytest.fixture(autouse=True)
