@@ -73,7 +73,7 @@ GitHub hook trigger for GITScm polling
 
 ## 환경 변수 설정 (선택사항)
 
-Jenkins 관리 > System > Global properties에서 환경 변수 추가:
+Jenkins 관리 > System > Global properties에서 Environment variables 추가:
 
 | 변수명 | 값 | 설명 |
 |-------|-----|------|
