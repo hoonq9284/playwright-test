@@ -43,6 +43,48 @@ allure --version  # 3.x.x
 
 ---
 
+## 테스트 실행 전체 흐름
+
+```
+[로컬 PC]
+  └── run_test.sh 실행
+        │
+        ├── docker-compose up --build
+        │     │
+        │     └── [Docker 컨테이너 내부]
+        │           ├── pip install (requirements.txt)
+        │           ├── playwright install (브라우저 바이너리)
+        │           └── pytest 실행 → allure-results 생성
+        │                 │
+        │                 └── 볼륨 마운트로 호스트에 저장
+        │                       ./reports/allure-results
+        │
+        ├── allure generate  (호스트에서 실행)
+        │     └── ./reports/allure-results → ./reports/allure-report
+        │
+        └── allure open  (호스트에서 브라우저 오픈)
+```
+
+### 핵심 포인트
+
+**테스트는 컨테이너 안에서 실행됩니다**
+- pytest, playwright, allure-pytest 등 모든 라이브러리는 Dockerfile의 `pip install`로 컨테이너에 설치됩니다.
+- 로컬 PC에 Python이나 playwright를 별도로 설치할 필요가 없습니다.
+
+**Allure CLI는 호스트(로컬 PC)에서 실행됩니다**
+- `allure generate` / `allure open`은 브라우저를 띄우는 UI 작업이라 컨테이너 내부에서 실행이 어렵습니다.
+- 테스트 결과 파일만 볼륨 마운트로 컨테이너 → 호스트로 전달하고, 리포트 생성 및 열기는 호스트에서 처리합니다.
+
+**Jenkins에서는 Allure 플러그인이 대신합니다**
+- Jenkins 파이프라인에서는 `allure generate` / `allure open` 없이 Allure 플러그인이 results를 읽어 리포트를 생성하고 Jenkins UI에 게시합니다.
+- Jenkins 빌드 시 `allure` CLI가 호스트에 설치되어 있지 않아도 됩니다.
+
+**볼륨 마운트로 데이터를 공유합니다**
+- `docker-compose.yml`의 `./reports:/reports` 설정으로 컨테이너 내부의 `/reports`와 호스트의 `./reports`가 연결됩니다.
+- 컨테이너가 종료된 후에도 결과 파일이 호스트에 남아있습니다.
+
+---
+
 ## 실행 명령어
 
 ### 전체 테스트 실행
@@ -52,6 +94,7 @@ allure --version  # 3.x.x
 ```
 
 컨테이너를 내리고 → 리포트 초기화 → 빌드 → 테스트 실행 → Allure 리포트 오픈까지 자동으로 수행합니다.
+Ctrl+C로 종료하거나 스크립트가 중단되어도 컨테이너는 자동으로 정리됩니다.
 
 ### 개별 테스트 실행
 
@@ -149,7 +192,6 @@ saucedemo.com에서 제공하는 6종 사용자 타입을 `data/users.py`에 정
 |---------|------|
 | `login_page` | 로그인 페이지 열기 |
 | `logged_in_page` | standard_user로 로그인된 InventoryPage |
-| `logged_in_with_cart` | 로그인 + 장바구니에 2개 상품 추가된 상태 |
 | `capture_screenshot` | 모든 테스트 종료 시 스크린샷 자동 첨부 (autouse) |
 
 ---
@@ -160,6 +202,7 @@ saucedemo.com에서 제공하는 6종 사용자 타입을 `data/users.py`에 정
 
 | 변수 | 기본값 | 설명 |
 |------|--------|------|
+| `TEST_URL` | `https://www.saucedemo.com` | 테스트 대상 URL |
 | `DEFAULT_TIMEOUT` | `10` | 요소 대기 타임아웃 (초) |
 | `PAGE_LOAD_TIMEOUT` | `30` | 페이지 로드 타임아웃 (초) |
 | `HEADLESS` | `true` | 헤드리스 모드 여부 |
@@ -174,5 +217,13 @@ Jenkins 파이프라인은 `Jenkinsfile`에 정의되어 있습니다.
 ```
 Cleanup → Build → Test → Allure 리포트 발행 → 아티팩트 저장
 ```
+
+### 빌드 파라미터
+
+Jenkins에서 **"Build with Parameters"** 로 빌드 시 아래 파라미터를 지정할 수 있습니다.
+
+| 파라미터 | 기본값 | 설명 |
+|---------|--------|------|
+| `TEST_URL` | `https://www.saucedemo.com` | 테스트 대상 URL |
 
 상세 설정은 [docs/JENKINS_SETUP.md](docs/JENKINS_SETUP.md)를 참고하세요.
