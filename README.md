@@ -9,7 +9,7 @@ Playwright + pytest + Page Object Model 패턴으로 구성되며, Docker 컨테
 
 | 항목 | 버전 |
 |------|------|
-| Python | 3.x |
+| Python | 3.11.x (Playwright 이미지에 내장) |
 | Playwright | 1.57.0 |
 | pytest | 9.0.2 |
 | allure-pytest | 2.15.3 |
