@@ -30,3 +30,5 @@ Thumbs.db
 
 # agent
 .claude/
+CLAUDE.md
+settings.local.json

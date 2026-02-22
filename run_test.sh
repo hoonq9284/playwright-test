@@ -5,7 +5,7 @@ rm -rf ./reports
 
 docker-compose up --build --abort-on-container-exit
 
-# Allure 3 commands (npx allure ensures using Allure 3)
-npx allure open reports/allure-results
+allure generate ./reports/allure-results -o ./reports/allure-report
+allure open ./reports/allure-report
 
 docker-compose down

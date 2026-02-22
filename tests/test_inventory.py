@@ -254,8 +254,9 @@ class TestProblemUser:
     def test_problem_user_can_add_to_cart(self, problem_user_page):
         """문제 사용자가 장바구니에 추가할 수 있는지 확인"""
         problem_user_page.add_item_to_cart_by_index(0)
-        # problem_user의 경우 장바구니 기능이 제대로 동작하지 않을 수 있음
-        # 이 테스트는 실제 동작을 확인하는 용도
+        badge_count = problem_user_page.get_cart_badge_count()
+
+        assert badge_count == 1, f"Cart badge should show 1, but got {badge_count}"
 
 
 class TestErrorUser:

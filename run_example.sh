@@ -6,14 +6,14 @@
 # 1. 테스트만 실행
 docker-compose up --build --abort-on-container-exit
 
-# 2. Allure 리포트 생성 (npx allure 3.x)
-npx allure generate ./reports/allure-results -o ./reports/allure-report --clean
+# 2. Allure 리포트 생성 (Allure 3.x)
+allure generate ./reports/allure-results -o ./reports/allure-report
 
 # 3. Allure 리포트 서버 실행 (실시간 확인)
-npx allure serve ./reports/allure-results
+allure serve ./reports/allure-results
 
 # 4. Allure 리포트 열기 (HTTP 서버로 제공)
-npx allure open ./reports/allure-report
+allure open ./reports/allure-report
 
 # 5. 컨테이너 정리
 docker-compose down

@@ -102,8 +102,9 @@ def logged_in_with_cart(page: Page):
     login.login(Users.STANDARD.username, Users.STANDARD.password)
 
     inventory = InventoryPage(page)
-    inventory.add_item_to_cart_by_index(0)
-    inventory.add_item_to_cart_by_index(1)
+    item_names = inventory.get_item_names()
+    inventory.add_item_to_cart_by_name(item_names[0])
+    inventory.add_item_to_cart_by_name(item_names[1])
 
     return inventory
 
