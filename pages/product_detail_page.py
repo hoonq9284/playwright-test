@@ -15,7 +15,6 @@ class ProductDetailPage(BasePage):
     ADD_TO_CART_BUTTON = "[data-test^='add-to-cart']"
     REMOVE_BUTTON = "[data-test^='remove']"
     BACK_BUTTON = "[data-test='back-to-products']"
-    SHOPPING_CART_BADGE = ".shopping_cart_badge"
     SHOPPING_CART_LINK = ".shopping_cart_link"
 
     def __init__(self, page: Page):
@@ -74,13 +73,6 @@ class ProductDetailPage(BasePage):
         """제품 목록으로 돌아가기"""
         self.click(self.BACK_BUTTON)
         return self
-
-    def get_cart_badge_count(self) -> int:
-        """장바구니 배지 숫자 반환"""
-        if self.is_visible(self.SHOPPING_CART_BADGE, timeout=2000):
-            text = self.get_text(self.SHOPPING_CART_BADGE)
-            return int(text) if text else 0
-        return 0
 
     def click_shopping_cart(self):
         """장바구니 클릭"""

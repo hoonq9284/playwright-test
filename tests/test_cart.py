@@ -1,4 +1,5 @@
 import pytest
+import allure
 from playwright.sync_api import Page
 
 from data.users import Users
@@ -8,6 +9,8 @@ from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutStepOnePage
 
 
+@allure.feature("장바구니")
+@allure.story("기본 검증")
 class TestCartPageBasic:
     """장바구니 페이지 기본 테스트"""
 
@@ -28,6 +31,8 @@ class TestCartPageBasic:
         assert "cart.html" in current_url, f"URL should contain 'cart.html', got '{current_url}'"
 
 
+@allure.feature("장바구니")
+@allure.story("상품 있는 장바구니")
 class TestCartWithItems:
     """장바구니에 상품이 있는 경우 테스트"""
 
@@ -96,6 +101,8 @@ class TestCartWithItems:
         assert len(description) > 0, "Item description should not be empty"
 
 
+@allure.feature("장바구니")
+@allure.story("상품 제거")
 class TestCartRemoveItems:
     """장바구니 아이템 제거 테스트"""
 
@@ -138,6 +145,8 @@ class TestCartRemoveItems:
         assert first_item_name not in cart_names, f"'{first_item_name}' should be removed from cart"
 
 
+@allure.feature("장바구니")
+@allure.story("네비게이션")
 class TestCartNavigation:
     """장바구니 네비게이션 테스트"""
 
@@ -176,6 +185,8 @@ class TestCartNavigation:
         assert cart_page.get_cart_item_count() == 3, "Cart should have 3 items"
 
 
+@allure.feature("장바구니")
+@allure.story("가격 표시")
 class TestCartPriceDisplay:
     """장바구니 가격 표시 테스트"""
 
@@ -206,6 +217,8 @@ class TestCartPriceDisplay:
             assert price.startswith("$"), f"Price should start with $, got '{price}'"
 
 
+@allure.feature("장바구니")
+@allure.story("빈 장바구니 체크아웃")
 class TestCartEmptyCheckout:
     """빈 장바구니 체크아웃 테스트"""
 
@@ -222,6 +235,8 @@ class TestCartEmptyCheckout:
         assert checkout_step_one_page.is_checkout_step_one_page()
 
 
+@allure.feature("장바구니")
+@allure.story("아이템 클릭")
 class TestCartItemClickable:
     """장바구니 아이템 클릭 테스트"""
 

@@ -1,4 +1,5 @@
 import pytest
+import allure
 from playwright.sync_api import Page
 
 from data.users import Users
@@ -8,6 +9,8 @@ from pages.product_detail_page import ProductDetailPage
 from pages.cart_page import CartPage
 
 
+@allure.feature("상품 상세")
+@allure.story("페이지 이동")
 class TestProductDetailNavigation:
     """상품 상세 페이지 네비게이션 테스트"""
 
@@ -42,6 +45,8 @@ class TestProductDetailNavigation:
         assert logged_in_page.is_inventory_page(), "Should return to inventory page"
 
 
+@allure.feature("상품 상세")
+@allure.story("컨텐츠 검증")
 class TestProductDetailContent:
     """상품 상세 페이지 컨텐츠 테스트"""
 
@@ -98,6 +103,8 @@ class TestProductDetailContent:
         assert "static/media" in image_src or "jpg" in image_src or "png" in image_src
 
 
+@allure.feature("상품 상세")
+@allure.story("장바구니 조작")
 class TestProductDetailCartOperations:
     """상품 상세 페이지에서 장바구니 조작 테스트"""
 
@@ -147,6 +154,8 @@ class TestProductDetailCartOperations:
         assert cart_page.get_cart_item_count() == 1
 
 
+@allure.feature("상품 상세")
+@allure.story("전체 상품 검증")
 class TestAllProductsDetail:
     """모든 상품 상세 페이지 테스트"""
 
@@ -171,6 +180,8 @@ class TestAllProductsDetail:
         assert product_detail_page.is_product_image_displayed()
 
 
+@allure.feature("상품 상세")
+@allure.story("상태 유지")
 class TestProductDetailPersistence:
     """상품 상세 페이지 상태 유지 테스트"""
 

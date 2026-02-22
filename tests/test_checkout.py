@@ -1,4 +1,5 @@
 import pytest
+import allure
 from playwright.sync_api import Page
 
 from data.users import Users
@@ -8,6 +9,8 @@ from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutStepOnePage, CheckoutStepTwoPage, CheckoutCompletePage
 
 
+@allure.feature("체크아웃")
+@allure.story("1단계 유효성 검사")
 class TestCheckoutStepOneValidation:
     """체크아웃 1단계 유효성 검사 테스트"""
 
@@ -71,6 +74,8 @@ class TestCheckoutStepOneValidation:
         # 실제로 에러가 사라지는지는 구현에 따라 다를 수 있음
 
 
+@allure.feature("체크아웃")
+@allure.story("1단계 네비게이션")
 class TestCheckoutStepOneNavigation:
     """체크아웃 1단계 네비게이션 테스트"""
 
@@ -96,6 +101,8 @@ class TestCheckoutStepOneNavigation:
         assert checkout_step_two_page.is_checkout_step_two_page(), "Should navigate to checkout step two"
 
 
+@allure.feature("체크아웃")
+@allure.story("2단계 주문 확인")
 class TestCheckoutStepTwo:
     """체크아웃 2단계 테스트"""
 
@@ -168,6 +175,8 @@ class TestCheckoutStepTwo:
         assert inventory_page.is_inventory_page(), "Should return to inventory page"
 
 
+@allure.feature("체크아웃")
+@allure.story("체크아웃 완료")
 class TestCheckoutComplete:
     """체크아웃 완료 테스트"""
 
@@ -223,6 +232,8 @@ class TestCheckoutComplete:
         assert badge_count == 0, "Cart should be empty after checkout"
 
 
+@allure.feature("체크아웃")
+@allure.story("전체 플로우")
 class TestFullCheckoutFlow:
     """전체 체크아웃 플로우 테스트"""
 
@@ -291,6 +302,8 @@ class TestFullCheckoutFlow:
         assert checkout_complete_page.is_checkout_complete_page()
 
 
+@allure.feature("체크아웃")
+@allure.story("특수 사용자")
 class TestCheckoutWithSpecialUsers:
     """특수 사용자 체크아웃 테스트"""
 

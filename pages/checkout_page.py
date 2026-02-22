@@ -14,7 +14,6 @@ class CheckoutStepOnePage(BasePage):
     CANCEL_BUTTON = "[data-test='cancel']"
     ERROR_MESSAGE = "[data-test='error']"
     ERROR_BUTTON = ".error-button"
-    PAGE_TITLE = ".title"
 
     def __init__(self, page: Page):
         super().__init__(page)
@@ -23,10 +22,6 @@ class CheckoutStepOnePage(BasePage):
     def is_checkout_step_one_page(self) -> bool:
         """현재 페이지가 체크아웃 1단계인지 확인"""
         return self.is_visible(self.FIRST_NAME_INPUT, timeout=5000)
-
-    def get_page_title(self) -> str:
-        """페이지 타이틀 반환"""
-        return self.get_text(self.PAGE_TITLE)
 
     def enter_first_name(self, first_name: str):
         """이름 입력"""
@@ -90,7 +85,6 @@ class CheckoutStepTwoPage(BasePage):
     PAYMENT_INFO = ".summary_value_label"
     FINISH_BUTTON = "[data-test='finish']"
     CANCEL_BUTTON = "[data-test='cancel']"
-    PAGE_TITLE = ".title"
 
     def __init__(self, page: Page):
         super().__init__(page)
@@ -99,10 +93,6 @@ class CheckoutStepTwoPage(BasePage):
     def is_checkout_step_two_page(self) -> bool:
         """현재 페이지가 체크아웃 2단계인지 확인"""
         return self.is_visible(self.SUMMARY_INFO, timeout=5000)
-
-    def get_page_title(self) -> str:
-        """페이지 타이틀 반환"""
-        return self.get_text(self.PAGE_TITLE)
 
     def get_cart_item_count(self) -> int:
         """장바구니 아이템 개수 반환"""
@@ -168,7 +158,6 @@ class CheckoutCompletePage(BasePage):
     COMPLETE_TEXT = ".complete-text"
     PONY_EXPRESS_IMAGE = ".pony_express"
     BACK_HOME_BUTTON = "[data-test='back-to-products']"
-    PAGE_TITLE = ".title"
 
     def __init__(self, page: Page):
         super().__init__(page)
@@ -177,10 +166,6 @@ class CheckoutCompletePage(BasePage):
     def is_checkout_complete_page(self) -> bool:
         """현재 페이지가 체크아웃 완료 페이지인지 확인"""
         return self.is_visible(self.COMPLETE_CONTAINER, timeout=5000)
-
-    def get_page_title(self) -> str:
-        """페이지 타이틀 반환"""
-        return self.get_text(self.PAGE_TITLE)
 
     def get_complete_header(self) -> str:
         """완료 헤더 텍스트 반환"""

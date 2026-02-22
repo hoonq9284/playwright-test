@@ -1,4 +1,5 @@
 import pytest
+import allure
 from playwright.sync_api import Page
 
 from data.users import Users
@@ -7,6 +8,8 @@ from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
 
 
+@allure.feature("상품 목록")
+@allure.story("페이지 기본 검증")
 class TestInventoryPage:
     """인벤토리 페이지 기본 테스트"""
 
@@ -59,6 +62,8 @@ class TestInventoryPage:
         assert "inventory.html" in current_url, f"URL should contain 'inventory.html', but got '{current_url}'"
 
 
+@allure.feature("상품 목록")
+@allure.story("상품 정렬")
 class TestProductSorting:
     """제품 정렬 테스트"""
 
@@ -106,6 +111,8 @@ class TestProductSorting:
         assert current_option == "hilo", "Sort option should persist after selection"
 
 
+@allure.feature("상품 목록")
+@allure.story("장바구니 조작")
 class TestShoppingCartFromInventory:
     """인벤토리에서 장바구니 추가/제거 테스트"""
 
@@ -164,6 +171,8 @@ class TestShoppingCartFromInventory:
         assert cart_page.get_page_title() == "Your Cart", f"Cart page title should be 'Your Cart'"
 
 
+@allure.feature("상품 목록")
+@allure.story("메뉴 네비게이션")
 class TestMenuNavigation:
     """메뉴 네비게이션 테스트"""
 
@@ -174,8 +183,6 @@ class TestMenuNavigation:
         assert logged_in_page.is_visible("#logout_sidebar_link"), "Menu should be open"
 
         logged_in_page.close_menu()
-        # 메뉴 닫힌 후 약간의 대기
-        logged_in_page.page.wait_for_timeout(500)
 
     def test_all_items_menu_navigates_to_inventory(self, logged_in_page):
         """'All Items' 메뉴 클릭 시 인벤토리 페이지로 이동"""
@@ -195,7 +202,6 @@ class TestMenuNavigation:
 
         logged_in_page.reset_app_state()
         logged_in_page.close_menu()
-        logged_in_page.page.wait_for_timeout(500)
         badge_count = logged_in_page.get_cart_badge_count()
 
         assert badge_count == 0, "Cart should be empty after reset"
@@ -209,6 +215,8 @@ class TestMenuNavigation:
         assert "saucedemo.com" in logged_in_page.get_current_url()
 
 
+@allure.feature("상품 목록")
+@allure.story("푸터")
 class TestFooter:
     """푸터 테스트"""
 
@@ -235,6 +243,8 @@ class TestFooter:
         assert "linkedin.com" in linkedin_link.lower(), f"LinkedIn link should exist, got '{linkedin_link}'"
 
 
+@allure.feature("상품 목록")
+@allure.story("문제 사용자")
 class TestProblemUser:
     """문제 사용자에 대한 테스트"""
 
@@ -259,6 +269,8 @@ class TestProblemUser:
         assert badge_count == 1, f"Cart badge should show 1, but got {badge_count}"
 
 
+@allure.feature("상품 목록")
+@allure.story("에러 사용자")
 class TestErrorUser:
     """에러 사용자에 대한 테스트"""
 

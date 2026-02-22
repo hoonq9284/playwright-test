@@ -1,4 +1,5 @@
 import pytest
+import allure
 from playwright.sync_api import Page
 
 from data.users import Users, User
@@ -6,6 +7,8 @@ from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 
 
+@allure.feature("로그인")
+@allure.story("유효한 사용자 로그인")
 class TestLoginValidUsers:
     """로그인 가능한 사용자들에 대한 테스트"""
 
@@ -24,6 +27,8 @@ class TestLoginValidUsers:
             f"{user.username}: 제품이 표시되어야 합니다"
 
 
+@allure.feature("로그인")
+@allure.story("잠긴 사용자 로그인")
 class TestLoginInvalidUsers:
     """로그인 불가능한 사용자들에 대한 테스트"""
 
@@ -41,6 +46,8 @@ class TestLoginInvalidUsers:
             f"{user.username}: 예상된 에러 메시지가 표시되어야 합니다"
 
 
+@allure.feature("로그인")
+@allure.story("입력값 유효성 검사")
 class TestLoginValidation:
     """로그인 유효성 검사 테스트"""
 
@@ -82,6 +89,8 @@ class TestLoginValidation:
         assert "do not match" in login_page.get_error_message()
 
 
+@allure.feature("로그인")
+@allure.story("사용자 유형별 테스트")
 class TestLoginSpecificUsers:
     """각 사용자 유형별 상세 테스트"""
 
@@ -152,6 +161,8 @@ class TestLoginSpecificUsers:
         assert inventory_page.is_inventory_page()
 
 
+@allure.feature("로그인")
+@allure.story("로그아웃")
 class TestLogout:
     """로그아웃 테스트"""
 

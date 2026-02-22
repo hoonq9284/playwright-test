@@ -15,7 +15,6 @@ class InventoryPage(BasePage):
     INVENTORY_ITEM_IMAGE = ".inventory_item_img"
     ADD_TO_CART_BUTTON = "button[data-test^='add-to-cart']"
     REMOVE_BUTTON = "button[data-test^='remove']"
-    SHOPPING_CART_BADGE = ".shopping_cart_badge"
     SHOPPING_CART_LINK = ".shopping_cart_link"
     BURGER_MENU_BUTTON = "#react-burger-menu-btn"
     CLOSE_MENU_BUTTON = "#react-burger-cross-btn"
@@ -24,7 +23,6 @@ class InventoryPage(BasePage):
     ABOUT_LINK = "#about_sidebar_link"
     RESET_APP_LINK = "#reset_sidebar_link"
     SORT_DROPDOWN = ".product_sort_container"
-    PAGE_TITLE = ".title"
     FOOTER = ".footer"
     TWITTER_LINK = ".social_twitter a"
     FACEBOOK_LINK = ".social_facebook a"
@@ -43,10 +41,6 @@ class InventoryPage(BasePage):
     def is_inventory_page(self) -> bool:
         """현재 페이지가 인벤토리 페이지인지 확인"""
         return self.is_visible(self.INVENTORY_LIST, timeout=5000)
-
-    def get_page_title(self) -> str:
-        """페이지 타이틀 반환"""
-        return self.get_text(self.PAGE_TITLE)
 
     def get_inventory_count(self) -> int:
         """인벤토리 아이템 개수 반환"""
@@ -69,13 +63,6 @@ class InventoryPage(BasePage):
             buttons[index].click()
         return self
 
-    def get_cart_badge_count(self) -> int:
-        """장바구니 배지 숫자 반환"""
-        if self.is_visible(self.SHOPPING_CART_BADGE, timeout=2000):
-            text = self.get_text(self.SHOPPING_CART_BADGE)
-            return int(text) if text else 0
-        return 0
-
     def open_menu(self):
         """햄버거 메뉴 열기"""
         self.click(self.BURGER_MENU_BUTTON)
@@ -91,6 +78,7 @@ class InventoryPage(BasePage):
     def close_menu(self):
         """햄버거 메뉴 닫기"""
         self.click(self.CLOSE_MENU_BUTTON)
+        self.page.wait_for_selector(self.CLOSE_MENU_BUTTON, state="hidden")
         return self
 
     def click_all_items(self):
@@ -165,16 +153,14 @@ class InventoryPage(BasePage):
 
     def add_item_to_cart_by_name(self, item_name: str):
         """이름으로 아이템을 장바구니에 추가"""
-        item_id = item_name.lower().replace(" ", "-")
-        add_button = f"[data-test='add-to-cart-{item_id}']"
+        add_button = f"[data-test='add-to-cart-{self._item_name_to_id(item_name)}']"
         if self.is_visible(add_button, timeout=2000):
             self.click(add_button)
         return self
 
     def remove_item_from_cart_by_name(self, item_name: str):
         """이름으로 아이템을 장바구니에서 제거"""
-        item_id = item_name.lower().replace(" ", "-")
-        remove_button = f"[data-test='remove-{item_id}']"
+        remove_button = f"[data-test='remove-{self._item_name_to_id(item_name)}']"
         if self.is_visible(remove_button, timeout=2000):
             self.click(remove_button)
         return self

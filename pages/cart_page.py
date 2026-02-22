@@ -16,7 +16,6 @@ class CartPage(BasePage):
     REMOVE_BUTTON = "button[data-test^='remove']"
     CONTINUE_SHOPPING_BUTTON = "[data-test='continue-shopping']"
     CHECKOUT_BUTTON = "[data-test='checkout']"
-    PAGE_TITLE = ".title"
 
     def __init__(self, page: Page):
         super().__init__(page)
@@ -30,10 +29,6 @@ class CartPage(BasePage):
     def is_cart_page(self) -> bool:
         """현재 페이지가 장바구니 페이지인지 확인"""
         return self.is_visible(self.CART_LIST, timeout=5000)
-
-    def get_page_title(self) -> str:
-        """페이지 타이틀 반환"""
-        return self.get_text(self.PAGE_TITLE)
 
     def get_cart_item_count(self) -> int:
         """장바구니 아이템 개수 반환"""
@@ -63,9 +58,7 @@ class CartPage(BasePage):
 
     def remove_item_by_name(self, item_name: str):
         """이름으로 아이템 제거"""
-        # 아이템 이름을 기반으로 remove 버튼 찾기
-        item_id = item_name.lower().replace(" ", "-")
-        remove_selector = f"[data-test='remove-{item_id}']"
+        remove_selector = f"[data-test='remove-{self._item_name_to_id(item_name)}']"
         if self.is_visible(remove_selector, timeout=2000):
             self.click(remove_selector)
         return self

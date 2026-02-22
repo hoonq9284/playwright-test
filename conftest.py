@@ -94,21 +94,6 @@ def product_detail_page(page: Page):
     return ProductDetailPage(page)
 
 
-@pytest.fixture
-def logged_in_with_cart(page: Page):
-    """표준 사용자로 로그인 후 장바구니에 상품 추가된 상태"""
-    login = LoginPage(page)
-    login.open()
-    login.login(Users.STANDARD.username, Users.STANDARD.password)
-
-    inventory = InventoryPage(page)
-    item_names = inventory.get_item_names()
-    inventory.add_item_to_cart_by_name(item_names[0])
-    inventory.add_item_to_cart_by_name(item_names[1])
-
-    return inventory
-
-
 @pytest.fixture(autouse=True)
 def capture_screenshot(request, page: Page):
     """모든 테스트에서 스크린샷 첨부"""
