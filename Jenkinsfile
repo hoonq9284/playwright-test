@@ -1,10 +1,19 @@
 pipeline {
     agent any
 
+    parameters {
+        string(
+            name: 'TEST_URL',
+            defaultValue: 'https://www.saucedemo.com',
+            description: '테스트 대상 URL'
+        )
+    }
+
     environment {
         PATH = "/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
         DOCKER_IMAGE = 'playwright-test'
         REPORTS_DIR = 'reports'
+        TEST_URL = "${params.TEST_URL}"
     }
 
     options {
@@ -37,7 +46,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh 'docker-compose up --abort-on-container-exit --exit-code-from test'
+                    sh 'TEST_URL=${TEST_URL} docker-compose up --abort-on-container-exit --exit-code-from test'
                 }
             }
             post {

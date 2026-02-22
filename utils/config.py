@@ -13,7 +13,7 @@ class Config:
     SCREENSHOT_ON_FAILURE = os.getenv("SCREENSHOT_ON_FAILURE", "true").lower() == "true"
 
     # 테스트 대상 URL
-    BASE_URL = "https://www.saucedemo.com"
+    BASE_URL = os.getenv("TEST_URL", "https://www.saucedemo.com")
 
     # 브라우저 설정
     HEADLESS = os.getenv("HEADLESS", "true").lower() == "true"
