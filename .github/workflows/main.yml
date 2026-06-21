@@ -1,9 +1,9 @@
 name: Continuous Intergation
 
 on:
-  push:
+  pull_request:
     branches: [main]
-  workflow_dispatch:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   test:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: [self-hosted, macOS, ARM64, docker, playwright]
     timeout-minutes: 30
 
@@ -40,12 +41,3 @@ jobs:
       - name: Stop Containers
         if: always()
         run: docker compose down --remove-orphans
-
-      - name: Upload Allure Results
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: allure-results
-          path: reports/allure-results
-          if-no-files-found: warn
-          retension-days: 7
