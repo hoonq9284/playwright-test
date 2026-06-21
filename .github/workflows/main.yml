@@ -1,0 +1,51 @@
+name: Continuous Intergation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playwright-self-hosted
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: [self-hosted, macOS, ARM64, docker, playwright]
+    timeout-minutes: 30
+
+    env:
+      TEST_URL: https://www.saucedemo.com
+      HEADLESS: "true"
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Check Docker
+        run: |
+          docker --version
+          docker compose version
+
+      - name: Run Playwright Tests
+        run: |
+          docker compose up \
+            --build \
+            --abort-on-container-exit \
+            --exit-code-from test
+
+      - name: Stop Containers
+        if: always()
+        run: docker compose down --remove-orphans
+
+      - name: Upload Allure Results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: allure-results
+          path: reports/allure-results
+          if-no-files-found: warn
+          retension-days: 7
